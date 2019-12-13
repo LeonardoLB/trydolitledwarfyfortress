@@ -12,6 +12,7 @@ var width int = 10
 var height int = 10
 var score = 0
 var scoreText *tl.Text
+var cd int = 3
 
 func main() {
 	game := tl.NewGame()
@@ -49,8 +50,9 @@ func main() {
 				level.AddEntity(&gold)
 			} else if path == 'E' {
 				enemy := Enemy{
-					Entity: tl.NewEntity(i, j, 1, 1),
-					level:  level,
+					Entity:   tl.NewEntity(i, j, 1, 1),
+					level:    level,
+					cooldown: cd,
 				}
 				enemy.SetCell(0, 0, &tl.Cell{Fg: tl.ColorBlue, Ch: 'E'})
 				level.AddEntity(&enemy)

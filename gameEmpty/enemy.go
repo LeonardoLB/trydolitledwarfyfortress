@@ -1,32 +1,53 @@
 package main
 
-import tl "github.com/JoelOtter/termloop"
+import (
+	"math/rand"
+	"time"
+
+	tl "github.com/JoelOtter/termloop"
+)
 
 type Enemy struct {
 	*tl.Entity
-	prevX int
-	prevY int
-	level *tl.BaseLevel
+	prevX    int
+	prevY    int
+	level    *tl.BaseLevel
+	cooldown int
 }
 
 func (enemy *Enemy) Tick(event tl.Event) {
-	// if event.Type == tl.EventKey { // Is it a keyboard event?
-	// 	player.prevX, player.prevY = player.Position()
-	// 	switch event.Key { // If so, switch on the pressed key.
-	// 	case tl.KeyArrowRight:
-	// 		player.SetPosition(player.prevX+1, player.prevY)
-	// 		logging("player walking to Right")
-	// 	case tl.KeyArrowLeft:
-	// 		player.SetPosition(player.prevX-1, player.prevY)
-	// 		logging("player walking to Left")
-	// 	case tl.KeyArrowUp:
-	// 		player.SetPosition(player.prevX, player.prevY-1)
-	// 		logging("player walking to Up")
-	// 	case tl.KeyArrowDown:
-	// 		player.SetPosition(player.prevX, player.prevY+1)
-	// 		logging("player walking to Down")
-	// 	}
-	// }
+	if enemy.cooldown > 0 {
+		enemy.cooldown -= 1
+	} else {
+		enemy.cooldown = cd
+		rand.Seed(time.Now().UnixNano())
+		list := rand.Perm(4)
+		var x, y = enemy.Position()
+		for _, element := range list {
+			switch element {
+			case 0:
+				if maze[x][y-2] != '*' {
+					enemy.SetPosition(x, y-1)
+					break
+				}
+			case 1:
+				if maze[x-1][y-1] != '*' {
+					enemy.SetPosition(x-1, y)
+					break
+				}
+			case 2:
+				if maze[x][y] != '*' {
+					enemy.SetPosition(x, y+1)
+					break
+				}
+			case 3:
+				if maze[x+1][y-1] != '*' {
+					enemy.SetPosition(x+1, y)
+					break
+				}
+			}
+		}
+	}
 }
 
 func (enemy *Enemy) Collide(collision tl.Physical) {

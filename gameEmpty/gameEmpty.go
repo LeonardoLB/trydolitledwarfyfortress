@@ -8,7 +8,7 @@ import (
 )
 
 var maze [][]rune
-var length int = 30
+var width int = 30
 var height int = 30
 var score = 0
 var scoreText *tl.Text
@@ -24,7 +24,7 @@ func main() {
 		Ch: ' ',
 	})
 
-	maze := generateMaze(length, height)
+	maze = generateMaze(width, height)
 	level.AddEntity(scoreText)
 	game.Screen().SetLevel(level)
 

@@ -21,6 +21,10 @@ func (gold *Gold) Collide(collision tl.Physical) {
 		RespawnGold(gold)
 		IncreaseScore(1)
 		logging("Gold Collected")
+	case *Enemy:
+		RespawnGold(gold)
+		IncreaseScore(-1)
+		logging("Gold Stolen")
 	}
 }
 

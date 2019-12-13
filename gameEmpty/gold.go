@@ -19,6 +19,12 @@ func (gold *Gold) Collide(collision tl.Physical) {
 	case *Player:
 		// gold.level.RemoveEntity(gold)
 		RespawnGold(gold)
+
+		var item Item
+		item.Name = "Gold"
+		item.Qtd = 1
+		addInventory(item)
+
 		IncreaseScore(1)
 		logging("Gold Collected")
 	case *Enemy:

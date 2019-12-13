@@ -13,5 +13,6 @@ func (gold *Gold) Collide(collision tl.Physical) {
 	switch collision.(type) {
 	case *Player:
 		gold.level.RemoveEntity(gold)
+		logging("Gold Collected")
 	}
 }

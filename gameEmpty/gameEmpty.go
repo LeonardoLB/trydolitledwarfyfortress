@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	tl "github.com/JoelOtter/termloop"
 )
 
@@ -34,6 +37,14 @@ func main() {
 		}
 	}
 
+	// gold
+	gold := Gold{
+		Entity: tl.NewEntity(2, 2, 1, 1),
+		level:  level,
+	}
+	gold.SetCell(0, 0, &tl.Cell{Fg: tl.ColorYellow, Ch: '$'})
+	level.AddEntity(&gold)
+
 	game.Start()
 }
 
@@ -50,12 +61,16 @@ func (player *Player) Tick(event tl.Event) {
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
 			player.SetPosition(player.prevX+1, player.prevY)
+			logging("player walking to Right")
 		case tl.KeyArrowLeft:
 			player.SetPosition(player.prevX-1, player.prevY)
+			logging("player walking to Left")
 		case tl.KeyArrowUp:
 			player.SetPosition(player.prevX, player.prevY-1)
+			logging("player walking to Up")
 		case tl.KeyArrowDown:
 			player.SetPosition(player.prevX, player.prevY+1)
+			logging("player walking to Down")
 		}
 	}
 }
@@ -72,4 +87,24 @@ func (player *Player) Draw(screen *tl.Screen) {
 	// player.level.SetOffset(screenWidth/2-x, screenHeight/2-y)
 	// // We need to make sure and call Draw on the underlying Entity.
 	player.Entity.Draw(screen)
+}
+
+func logging(message string) {
+	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	newLine := message
+	_, err = fmt.Fprintln(f, newLine)
+	if err != nil {
+		fmt.Println(err)
+		f.Close()
+		return
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 }

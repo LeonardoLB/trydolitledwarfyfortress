@@ -7,9 +7,13 @@ import (
 	tl "github.com/JoelOtter/termloop"
 )
 
+var score = 0
+var scoreText *tl.Text
+
 func main() {
 	game := tl.NewGame()
 	game.Screen().SetFps(30)
+	scoreText = tl.NewText(0, 0, " Score: 0 ", tl.ColorBlack, tl.ColorWhite)
 
 	level := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorGreen,
@@ -17,13 +21,13 @@ func main() {
 		Ch: ' ',
 	})
 
-	maze := generateMaze(30, 30)
-	// level.AddEntity(tl.NewRectangle(5, 10, 30, 1, tl.ColorBlue))
-	// level.AddEntity(tl.NewRectangle(5, 9, 2, 1, tl.ColorBlack))
+	maze := generateMaze(10, 10)
+	level.AddEntity(scoreText)
 	game.Screen().SetLevel(level)
 
 	for i, row := range maze {
 		for j, path := range row {
+			j += 1
 			if path == '*' {
 				level.AddEntity(tl.NewRectangle(i, j, 1, 1, tl.ColorBlack))
 			} else if path == 'S' {
@@ -106,4 +110,11 @@ func logging(message string) {
 		fmt.Println(err)
 		return
 	}
+}
+
+// IncreaseScore increases the score by the given amount and updates the
+// score text.
+func IncreaseScore(amount int) {
+	score += amount
+	scoreText.SetText(fmt.Sprint(" Score: ", score))
 }

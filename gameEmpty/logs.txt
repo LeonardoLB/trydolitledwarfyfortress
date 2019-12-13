@@ -40,3 +40,14 @@ player walking to Right
 player walking to Right
 player walking to Right
 player walking to Right
+player walking to Left
+player walking to Down
+player walking to Left
+player walking to Down
+player walking to Left
+player walking to Right
+player walking to Right
+player walking to Right
+player walking to Down
+player walking to Down
+player walking to Down

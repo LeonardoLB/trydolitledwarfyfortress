@@ -90,20 +90,6 @@ func (player *Player) Draw(screen *tl.Screen) {
 	player.Entity.Draw(screen)
 }
 
-type Gold struct {
-	*tl.Entity
-	prevX int
-	prevY int
-	level *tl.BaseLevel
-}
-
-func (gold *Gold) Collide(collision tl.Physical) {
-	switch collision.(type) {
-	case *Player:
-		gold.level.RemoveEntity(gold)
-	}
-}
-
 func logging(message string) {
 	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {

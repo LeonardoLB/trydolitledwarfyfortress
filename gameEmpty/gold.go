@@ -14,6 +14,8 @@ func (gold *Gold) Collide(collision tl.Physical) {
 	case *Player:
 		// gold.level.RemoveEntity(gold)
 		RespawnGold(gold)
+		IncreaseScore(1)
+		logging("Gold Collected")
 	}
 }
 

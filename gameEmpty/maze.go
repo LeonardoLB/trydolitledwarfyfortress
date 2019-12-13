@@ -76,6 +76,13 @@ func generateMaze(w, h int) [][]rune {
 			last = opp
 		}
 	}
+
+	point = &Point{x: rand.Intn(w), y: rand.Intn(h)}
+	for maze[point.x][point.y] == '*' {
+		point = &Point{x: rand.Intn(w), y: rand.Intn(h)}
+	}
+	maze[point.x][point.y] = 'E'
+
 	maze[last.x][last.y] = 'L'
 	bordered := make([][]rune, len(maze)+2)
 	for r := range bordered {

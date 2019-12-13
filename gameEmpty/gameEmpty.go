@@ -24,6 +24,14 @@ func main() {
 	player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: 'X'})
 	level.AddEntity(&player)
 
+	// gold
+	gold := Gold{
+		Entity: tl.NewEntity(2, 2, 1, 1),
+		level:  level,
+	}
+	gold.SetCell(0, 0, &tl.Cell{Fg: tl.ColorYellow, Ch: '$'})
+	level.AddEntity(&gold)
+
 	game.Start()
 }
 
@@ -71,4 +79,18 @@ func (player *Player) Draw(screen *tl.Screen) {
 	player.level.SetOffset(screenWidth/2-x, screenHeight/2-y)
 	// We need to make sure and call Draw on the underlying Entity.
 	player.Entity.Draw(screen)
+}
+
+type Gold struct {
+	*tl.Entity
+	prevX int
+	prevY int
+	level *tl.BaseLevel
+}
+
+func (gold *Gold) Collide(collision tl.Physical) {
+	switch collision.(type) {
+	case *Player:
+		gold.level.RemoveEntity(gold)
+	}
 }

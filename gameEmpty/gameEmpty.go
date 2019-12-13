@@ -2,9 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	tl "github.com/JoelOtter/termloop"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/mp3"
+	"github.com/faiface/beep/speaker"
 )
 
 var maze [][]rune
@@ -15,6 +20,7 @@ var scoreText *tl.Text
 var cd int = 3
 
 func main() {
+
 	game := tl.NewGame()
 	game.Screen().SetFps(30)
 	scoreText = tl.NewText(0, 0, " Score: 0 ", tl.ColorBlack, tl.ColorWhite)
@@ -60,7 +66,32 @@ func main() {
 		}
 	}
 
+	go playSong()
+
 	game.Start()
+
+}
+
+func playSong() {
+	f, err := os.Open("music.mp3")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	streamer, format, err := mp3.Decode(f)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer streamer.Close()
+
+	speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/10))
+
+	done := make(chan bool)
+	speaker.Play(beep.Seq(streamer, beep.Callback(func() {
+		done <- true
+	})))
+
+	<-done
 }
 
 func logging(message string) {

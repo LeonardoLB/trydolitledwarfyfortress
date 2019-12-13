@@ -17,7 +17,7 @@ func main() {
 		Ch: ' ',
 	})
 
-	maze := generateMaze(100, 40)
+	maze := generateMaze(30, 30)
 	// level.AddEntity(tl.NewRectangle(5, 10, 30, 1, tl.ColorBlue))
 	// level.AddEntity(tl.NewRectangle(5, 9, 2, 1, tl.ColorBlack))
 	game.Screen().SetLevel(level)
@@ -33,17 +33,16 @@ func main() {
 				}
 				player.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: 'X'})
 				level.AddEntity(&player)
+			} else if path == 'L' {
+				gold := Gold{
+					Entity: tl.NewEntity(i, j, 1, 1),
+					level:  level,
+				}
+				gold.SetCell(0, 0, &tl.Cell{Fg: tl.ColorRed, Ch: '$'})
+				level.AddEntity(&gold)
 			}
 		}
 	}
-
-	// gold
-	gold := Gold{
-		Entity: tl.NewEntity(2, 2, 1, 1),
-		level:  level,
-	}
-	gold.SetCell(0, 0, &tl.Cell{Fg: tl.ColorYellow, Ch: '$'})
-	level.AddEntity(&gold)
 
 	game.Start()
 }

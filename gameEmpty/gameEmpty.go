@@ -1,6 +1,11 @@
 package main
 
-import tl "github.com/JoelOtter/termloop"
+import (
+	"fmt"
+	"os"
+
+	tl "github.com/JoelOtter/termloop"
+)
 
 func main() {
 	game := tl.NewGame()
@@ -48,12 +53,16 @@ func (player *Player) Tick(event tl.Event) {
 		switch event.Key { // If so, switch on the pressed key.
 		case tl.KeyArrowRight:
 			player.SetPosition(player.prevX+1, player.prevY)
+			logging("player walking to Right")
 		case tl.KeyArrowLeft:
 			player.SetPosition(player.prevX-1, player.prevY)
+			logging("player walking to Left")
 		case tl.KeyArrowUp:
 			player.SetPosition(player.prevX, player.prevY-1)
+			logging("player walking to Up")
 		case tl.KeyArrowDown:
 			player.SetPosition(player.prevX, player.prevY+1)
+			logging("player walking to Down")
 		}
 	}
 }
@@ -92,5 +101,25 @@ func (gold *Gold) Collide(collision tl.Physical) {
 	switch collision.(type) {
 	case *Player:
 		gold.level.RemoveEntity(gold)
+	}
+}
+
+func logging(message string) {
+	f, err := os.OpenFile("logs.txt", os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	newLine := message
+	_, err = fmt.Fprintln(f, newLine)
+	if err != nil {
+		fmt.Println(err)
+		f.Close()
+		return
+	}
+	err = f.Close()
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
 }

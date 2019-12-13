@@ -7,6 +7,10 @@ import (
 	tl "github.com/JoelOtter/termloop"
 )
 
+var maze [][]rune
+var length int = 30
+var height int = 30
+
 func main() {
 	game := tl.NewGame()
 	game.Screen().SetFps(30)
@@ -17,7 +21,7 @@ func main() {
 		Ch: ' ',
 	})
 
-	maze := generateMaze(30, 30)
+	maze := generateMaze(length, height)
 	// level.AddEntity(tl.NewRectangle(5, 10, 30, 1, tl.ColorBlue))
 	// level.AddEntity(tl.NewRectangle(5, 9, 2, 1, tl.ColorBlack))
 	game.Screen().SetLevel(level)

@@ -12,6 +12,11 @@ type Gold struct {
 func (gold *Gold) Collide(collision tl.Physical) {
 	switch collision.(type) {
 	case *Player:
-		gold.level.RemoveEntity(gold)
+		// gold.level.RemoveEntity(gold)
+		RespawnGold(gold)
 	}
+}
+
+func RespawnGold(gold *Gold) {
+
 }
